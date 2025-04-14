@@ -1,0 +1,8 @@
+:list of important commands:
+--> 'prevent_destroy' argument is set to true.this can be used to resources will not be destroyed when we run 'terraform destroy' 
+   ex: lifecycle {
+         prevent_destroy = true
+       }
+--> 'Terraform import'command is used when resources are created outside of terraform and when we want to start managing them with terraform.
+-->'terraform plan -refresh-only' this command is used to detect the changes/modifications done by someother using UI with using terraform.
+--> 'terraform apply -refresh-only' this command is used to update the statefile to reflect the current state of the resources without making any changes to the infrastructure but it will not apply any changes to the infrastructure.

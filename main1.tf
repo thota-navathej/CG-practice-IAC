@@ -1,13 +1,26 @@
 #CG IAC practice code
-/*
+
 provider "aws" {
   region = "us-east-1"
 }
 
 #retrieve the list of AZs in the current AWS region
+/*
 data "aws_availability_zones" "available" {}
+1 reference
 data "aws_region" "current" {}
 
+locals {
+  1 reference
+  team = "api_mgmt_dev"
+  1 reference
+  application = "corp_api"
+  1 reference
+  server_name = "ec2-${var.environment}-api-${var.variables_sub_az}"
+  }"
+}*/
+/*
+# Define the VPC
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
 
@@ -15,6 +28,7 @@ resource "aws_vpc" "vpc" {
     name        = var.vpc_name
     Environment = "demo_environment"
     terraform   = "true"
+    region      = data.aws_region.current.name
   }
 }
 
@@ -22,7 +36,7 @@ resource "aws_subnet" "private_subnets" {
   for_each          = var.private_subnets
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.value)
-  availability_zone = tolist(data.aws_availability_zones.available.names)[each.value]
+  availability_zone = tolist(data.aws_availability_zones.available.names)[each.value]  #(purpose of Tolist is to convert a set of strings into a list of strings)
 
   tags = {
     name      = each.key
@@ -90,7 +104,8 @@ resource "aws_internet_gateway" "internet_gateway" {
     Name = "demo-igw"
   }
 }
-/*
+
+
 #create EIP for NAT gateway
 resource "aws_eip" "nat_gateway_eip" {
   domain     = "vpc"
@@ -108,15 +123,11 @@ resource "aws_nat_gateway" "nat_gateway" {
     name = "demo-nat-gateway"
   }
 }
-*/
+
 
 #Terraform data block - To lookup Latest ubuntu 20.04 AMI Image
 # reference
 
-
-
-
-/*
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -137,11 +148,11 @@ output "image_id" {
 }
 
 resource "aws_instance" "ubuntu-server" {
-  ami = data.aws_ami.ubuntu.id
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  
+
 }
-*/
+
 
 module "subnet_addrs" {
   source  = "hashicorp/subnets/cidr"
@@ -163,6 +174,14 @@ module "subnet_addrs" {
 output "subnet_addrs" {
   value = module.subnet_addrs.network_cidr_blocks
 }
-
+*/
 
 #nat_gateway_id = aws_nat_gateway.nat_gateway.id
+
+
+module "aws_eip" {
+  source = "ccs-terraform/modules/aws//modules/elastic_ip"
+  version = "1.0.7"
+  eip_name = "my-elastic-ip"
+}
+
