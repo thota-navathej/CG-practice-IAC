@@ -1,4 +1,4 @@
-
+/*
 pipeline {
     agent any
     
@@ -18,6 +18,19 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+}
+*/
+pipeline {
+    agent any
+    stages{
+        stage('SCM'){
+            steps{
+                 git branch: 'master', url: git 'https://github.com/thota-navathej/CG-practice-IAC.git'
+
+            }
+           
         }
     }
 }
