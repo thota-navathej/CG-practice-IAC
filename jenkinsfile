@@ -1,0 +1,23 @@
+
+pipeline {
+    agent any
+    
+    environment {
+        SENTENCE = "this sentence splits into words serperately"
+    }
+    stages{
+        stage ('hello'){
+            steps{
+                echo "hello world"
+                
+                script {
+                    def words = env.SENTENCE.split(' ')
+                    
+                    for (word in words){
+                        echo word
+                    }
+                }
+            }
+        }
+    }
+}
